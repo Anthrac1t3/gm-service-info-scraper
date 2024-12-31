@@ -2,12 +2,20 @@ import sys
 import os
 
 from selenium import webdriver
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
 base_url = 'https://www.acdelcotds.com/'
+
+
+def process_hitlist(passed_driver: webdriver.Firefox):
+    try:
+        hits = passed_driver.find_elements(By.CLASS_NAME, 'hitListLink')
+    except NoSuchElementException as e:
+
 
 
 if __name__ == "__main__":
@@ -46,10 +54,13 @@ if __name__ == "__main__":
         driver.close()
 
     if input('Navigate to service info page and please press enter: ') == '':
+        driver.switch_to.window(driver.window_handles[1])
         publications = driver.find_elements(By.CLASS_NAME, 'hitListLink')
+
         print(len(publications))
         print(publications)
 
-        #print('Moving on...')
-
+    # Close up the windows
+    driver.close()
+    driver.switch_to.window(driver.window_handles[0])
     driver.close()
