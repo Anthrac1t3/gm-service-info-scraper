@@ -1,9 +1,12 @@
 import sys
 import os
+import time
 
 from selenium import webdriver
 from selenium.common import NoSuchElementException
+from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -12,10 +15,10 @@ base_url = 'https://www.acdelcotds.com/'
 
 
 def process_hitlist(passed_driver: webdriver.Firefox):
-    try:
-        hits = passed_driver.find_elements(By.CLASS_NAME, 'hitListLink')
-    except NoSuchElementException as e:
-
+    #try:
+    #    hits = passed_driver.find_elements(By.CLASS_NAME, 'hitListLink')
+    #except NoSuchElementException as e:
+    pass
 
 
 if __name__ == "__main__":
@@ -23,7 +26,17 @@ if __name__ == "__main__":
     password = sys.argv[2]
     print(f'Username: {username}, Password: {password}')
 
-    driver = webdriver.Firefox()
+    # Set up the Firefox browser_profile for printing
+    firefox_options = Options()
+    firefox_options.set_preference("print.always_print_silent", True)  # Suppress print dialog
+    firefox_options.set_preference("print_printer", "Mozilla Save to PDF")  # Set "Save to PDF" as default printer
+    firefox_options.set_preference("print.printer_Mozilla_Save_to_PDF.print_to_file", True)
+    firefox_options.set_preference("print.printer_Mozilla_Save_to_PDF.print_bgcolor", True)
+    #firefox_options.set_preference("print.printer_Mozilla_Save_to_PDF.print_to_filename",
+    #                               "C:\\Users\\coler\\Downloads\\test.pdf")  # Output file location
+
+    # Set up the Firefox driver
+    driver = webdriver.Firefox(options=firefox_options)
 
     # Navigate to acdelco site
     driver.get(base_url)
@@ -60,7 +73,15 @@ if __name__ == "__main__":
         print(len(publications))
         print(publications)
 
+        # save as pdf
+        #root = driver.find_element(By.TAG_NAME, 'html')
+        #root.screenshot(os.path.join('C:\\Users\\coler\\Downloads', 'test.png'))
+        driver.execute_script('window.print();')
+
+        time.sleep(30)
+
+
     # Close up the windows
-    driver.close()
-    driver.switch_to.window(driver.window_handles[0])
-    driver.close()
+    #driver.close()
+    #driver.switch_to.window(driver.window_handles[0])
+    driver.quit()
