@@ -32,8 +32,8 @@ if __name__ == "__main__":
     firefox_options.set_preference("print_printer", "Mozilla Save to PDF")  # Set "Save to PDF" as default printer
     firefox_options.set_preference("print.printer_Mozilla_Save_to_PDF.print_to_file", True)
     firefox_options.set_preference("print.printer_Mozilla_Save_to_PDF.print_bgcolor", True)
-    #firefox_options.set_preference("print.printer_Mozilla_Save_to_PDF.print_to_filename",
-    #                               "C:\\Users\\coler\\Downloads\\test.pdf")  # Output file location
+    firefox_options.set_preference("print.printer_Mozilla_Save_to_PDF.print_to_filename",
+                                   "C:\\Users\\coler\\Downloads\\test.pdf")  # Output file location
 
     # Set up the Firefox driver
     driver = webdriver.Firefox(options=firefox_options)
